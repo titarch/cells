@@ -3,6 +3,7 @@
 //
 
 #include <thread>
+#include <cmath>
 #include "Engine.h"
 
 void Engine::update_cells() {

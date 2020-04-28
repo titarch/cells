@@ -10,23 +10,21 @@
 #include "Cell.h"
 #include "codons/LoopCodon.h"
 
-inline constexpr float RADIUS = 50;
-inline constexpr float OUTLINE = RADIUS / 5;
-
 struct Hand {
+    float radius;
     bool inward;
     size_t pos;
 
-    explicit Hand() : inward(true), pos(0) {}
+    explicit Hand(float radius) : radius(radius), inward(true), pos(0) {}
 
     void set_inwards(bool inwards = true) { inward = inwards; }
 
     void set_outwards() { set_inwards(false); }
 
     sf::CircleShape circle() const {
-        sf::CircleShape c(RADIUS + RADIUS / 2);
+        sf::CircleShape c(radius + radius / 2);
         c.setOutlineColor(sf::Color::Cyan);
-        c.setOutlineThickness(OUTLINE / 2);
+        c.setOutlineThickness(radius / 10);
         c.setFillColor({0, 0, 0, 0});
         return c;
     }
@@ -34,7 +32,7 @@ struct Hand {
 
 class LoopCell : public Cell {
 public:
-    explicit LoopCell(Coord<float> const& pos, int energy) : Cell(pos), hand_(), energy_(energy), codon_idx_(0) {}
+    LoopCell(float radius, Vec2f const& pos, int energy) : Cell(radius, pos), hand_(radius), energy_(energy), codon_idx_(0) {}
 
     LoopCell(LoopCell const& other) = default;
 
@@ -67,12 +65,12 @@ public:
 
     void update() override;
 
-    Coord<float> codon_draw_pos(size_t idx, float dist) const;
+    Vec2f codon_draw_pos(size_t idx, float dist) const;
     void draw_cursor(sf::RenderWindow& w) const;
     void draw(sf::RenderWindow& w) const override;
 
-    static LoopCell classic(Coord<float> const& pos) {
-        LoopCell c(pos, 50);
+    static LoopCell classic(Vec2f const& pos) {
+        LoopCell c(50, pos, 50);
         c.push_codons({
                               LoopCodon::hand_outwards(2),
                               LoopCodon::eat(15),
@@ -83,7 +81,7 @@ public:
         return c;
     }
 
-    static LoopCell dividable(Coord<float> const& pos, Engine& e) {
+    static LoopCell dividable(Vec2f const& pos, Engine& e) {
         LoopCell c = classic(pos);
         c.push_codons({LoopCodon::divide(e, 90)}, 100);
         return c;

@@ -9,17 +9,11 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "codons/Codon.h"
-
-template<typename T>
-struct Coord {
-    T x, y;
-
-    Coord(T x, T y) : x(x), y(y) {}
-};
+#include "../utils/Vector.h"
 
 class Cell {
 public:
-    Cell(Coord<float> const& pos) : pos_(pos) {};
+    Cell(float radius, Vec2f const& pos) : radius_(radius), pos_(pos) {};
 
     template<typename C>
     Cell& push_codon(C const& codon) {
@@ -33,11 +27,16 @@ public:
         return *this;
     }
 
+    float radius() const { return radius_; }
+
+    Vec2f pos() const { return pos_; }
+
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow& w) const = 0;
 
 protected:
-    Coord<float> pos_;
+    float radius_;
+    Vec2f pos_;
     codons codons_;
 
     friend class Codon;
