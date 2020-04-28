@@ -16,11 +16,11 @@ using action_funcs = std::vector<action_func>;
 
 class LoopCodon : public Codon {
 public:
-    explicit LoopCodon(int durability, action_func action = noop)
+    explicit LoopCodon(int durability, action_func action = noop(1))
             : Codon(), max_durability_(durability), durability_(durability), action_(std::move(action)) {}
 
     action_func action() {
-        if (durability_ <= 0) return noop;
+        if (durability_ <= 0) return noop(1);
         durability_ -= 5;
         return action_;
     }
@@ -33,12 +33,12 @@ public:
 
     sf::CircleShape circle() const;
 
-    static void noop(LoopCell& c);
-    static void hand_inwards(LoopCell& c);
-    static void hand_outwards(LoopCell& c);
-    static void eat(LoopCell& c);
-    static void locate_weak(LoopCell& c);
-    static void repair(LoopCell& c);
+    static action_func noop(int cost);
+    static action_func hand_inwards(int cost);
+    static action_func hand_outwards(int cost);
+    static action_func eat(int reward);
+    static action_func locate_weak(int cost);
+    static action_func repair(int cost);
 protected:
     int max_durability_, durability_;
     action_func action_;

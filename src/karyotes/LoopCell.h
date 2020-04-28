@@ -70,13 +70,13 @@ public:
     void draw(sf::RenderWindow& w) const override;
 
     static LoopCell classic(Coord<float> const& pos) {
-        LoopCell c(pos, 100);
+        LoopCell c(pos, 50);
         c.push_codons({
-                              LoopCodon::hand_outwards,
-                              LoopCodon::eat,
-                              LoopCodon::hand_inwards,
-                              LoopCodon::locate_weak,
-                              LoopCodon::repair
+                              LoopCodon::hand_outwards(2),
+                              LoopCodon::eat(15),
+                              LoopCodon::hand_inwards(2),
+                              LoopCodon::locate_weak(3),
+                              LoopCodon::repair(5)
                       }, 100);
         return c;
     }
