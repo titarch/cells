@@ -3,6 +3,7 @@
 //
 
 #include "../LoopCell.h"
+#include "../../engine/Engine.h"
 #include "LoopCodon.h"
 
 action_func LoopCodon::noop(int cost) {
@@ -61,4 +62,13 @@ sf::CircleShape LoopCodon::circle() const {
     sf::CircleShape c(RADIUS * vitality() / 5);
     c.setFillColor(sf::Color::Blue);
     return c;
+}
+
+action_func LoopCodon::divide(Engine& e, int threshold) {
+    return [threshold, &e](LoopCell& c) {
+        if (c.energy_ < threshold) return;
+        c.energy_ /= 2;
+//        LoopCell copy(c);
+        e.push_cell(LoopCell::dividable({500, 500}, e));
+    };
 }

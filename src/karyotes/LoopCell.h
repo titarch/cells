@@ -36,6 +36,8 @@ class LoopCell : public Cell {
 public:
     explicit LoopCell(Coord<float> const& pos, int energy) : Cell(pos), hand_(), energy_(energy), codon_idx_(0) {}
 
+    LoopCell(LoopCell const& other) = default;
+
     const loop_codon_ptr codon(size_t idx) const {
         return std::static_pointer_cast<LoopCodon>(codons_[idx]);
     }
@@ -78,6 +80,12 @@ public:
                               LoopCodon::locate_weak(3),
                               LoopCodon::repair(5)
                       }, 100);
+        return c;
+    }
+
+    static LoopCell dividable(Coord<float> const& pos, Engine& e) {
+        LoopCell c = classic(pos);
+        c.push_codons({LoopCodon::divide(e, 90)}, 100);
         return c;
     }
 

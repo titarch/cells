@@ -10,6 +10,7 @@
 #include "Codon.h"
 
 class LoopCell;
+class Engine;
 
 using action_func = std::function<void(LoopCell&)>;
 using action_funcs = std::vector<action_func>;
@@ -39,6 +40,7 @@ public:
     static action_func eat(int reward);
     static action_func locate_weak(int cost);
     static action_func repair(int cost);
+    static action_func divide(Engine& e, int threshold);
 protected:
     int max_durability_, durability_;
     action_func action_;

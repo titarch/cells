@@ -6,8 +6,8 @@
 #include "Engine.h"
 
 void Engine::update_cells() {
-    for (auto const& c : cells_)
-        c->update();
+    for (size_t i = 0u; i < cells_.size(); ++i)
+        cells_[i]->update();
 }
 
 void Engine::draw_cells(sf::RenderWindow& w) {
