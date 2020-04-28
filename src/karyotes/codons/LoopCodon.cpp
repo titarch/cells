@@ -21,7 +21,7 @@ void LoopCodon::hand_outwards(LoopCell& c) {
 
 void LoopCodon::eat(LoopCell& c) {
     if (c.hand_.inward) return;
-    c.energy_ += 10;
+    c.energy_ += 15;
 }
 
 void LoopCodon::locate_weak(LoopCell& c) {

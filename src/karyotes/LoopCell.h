@@ -11,7 +11,7 @@
 #include "codons/LoopCodon.h"
 
 inline constexpr float RADIUS = 50;
-inline constexpr float OUTLINE = 10;
+inline constexpr float OUTLINE = RADIUS / 5;
 
 struct Hand {
     bool inward;
@@ -22,6 +22,14 @@ struct Hand {
     void set_inwards(bool inwards = true) { inward = inwards; }
 
     void set_outwards() { set_inwards(false); }
+
+    sf::CircleShape circle() const {
+        sf::CircleShape c(RADIUS + RADIUS / 2);
+        c.setOutlineColor(sf::Color::Cyan);
+        c.setOutlineThickness(OUTLINE / 2);
+        c.setFillColor({0, 0, 0, 0});
+        return c;
+    }
 };
 
 class LoopCell : public Cell {
@@ -57,7 +65,7 @@ public:
 
     void update() override;
 
-    Coord<float> codon_draw_pos(size_t idx) const;
+    Coord<float> codon_draw_pos(size_t idx, float dist) const;
     void draw_cursor(sf::RenderWindow& w) const;
     void draw(sf::RenderWindow& w) const override;
 
