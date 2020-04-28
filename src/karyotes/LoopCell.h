@@ -10,6 +10,9 @@
 #include "Cell.h"
 #include "codons/LoopCodon.h"
 
+inline constexpr float RADIUS = 50;
+inline constexpr float OUTLINE = 10;
+
 struct Hand {
     bool inward;
     size_t pos;
@@ -24,6 +27,10 @@ struct Hand {
 class LoopCell : public Cell {
 public:
     explicit LoopCell(Coord<float> const& pos, int energy) : Cell(pos), hand_(), energy_(energy), codon_idx_(0) {}
+
+    const loop_codon_ptr codon(size_t idx) const {
+        return std::static_pointer_cast<LoopCodon>(codons_[idx]);
+    }
 
     loop_codon_ptr codon(size_t idx) {
         return std::static_pointer_cast<LoopCodon>(codons_[idx]);
@@ -49,6 +56,9 @@ public:
     }
 
     void update() override;
+
+    Coord<float> codon_draw_pos(size_t idx) const;
+    void draw_cursor(sf::RenderWindow& w) const;
     void draw(sf::RenderWindow& w) const override;
 
     static LoopCell classic(Coord<float> const& pos) {
