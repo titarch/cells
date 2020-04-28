@@ -20,6 +20,13 @@ public:
     explicit LoopCodon(int durability, action_func action = noop(1))
             : Codon(), max_durability_(durability), durability_(durability), action_(std::move(action)) {}
 
+    codon_ptr clone() const override {
+        return std::make_shared<LoopCodon>(*this);
+    }
+
+public:
+
+
     action_func action() {
         if (durability_ <= 0) return noop(1);
         durability_ -= 5;

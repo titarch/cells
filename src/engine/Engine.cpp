@@ -16,6 +16,24 @@ void Engine::draw_cells(sf::RenderWindow& w) {
         c->draw(w);
 }
 
+void Engine::update_physics() {
+    for (size_t i = 0u; i < cells_.size(); ++i) {
+        auto& ci = cells_[i];
+        for (size_t j = i + 1; j < cells_.size(); ++j) {
+            auto& cj = cells_[j];
+            if ((ci->pos() - cj->pos()).sqrMagnitude() < 9 * ci->radius() * cj->radius()) {
+                auto n = (cj->pos() - ci->pos()).normalized();
+                if (auto nsq = n.sqrMagnitude(); nsq == 0 || std::isnan(nsq))
+                    n = Vec2f::random();
+                ci->add_vel(-n);
+                cj->add_vel(n);
+            }
+        }
+        ci->add_pos(ci->vel());
+        ci->brake();
+    }
+}
+
 void Engine::run() {
     sf::RenderWindow window(sf::VideoMode(w_, h_), "sfml-cells");
     while (window.isOpen()) {
@@ -38,6 +56,7 @@ void Engine::run() {
         draw_cells(window);
         window.display();
         update_cells();
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        update_physics();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

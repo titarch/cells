@@ -68,7 +68,6 @@ action_func LoopCodon::divide(Engine& e, int threshold) {
     return [threshold, &e](LoopCell& c) {
         if (c.energy_ < threshold) return;
         c.energy_ /= 2;
-//        LoopCell copy(c);
-        e.push_cell(LoopCell::dividable({{500, 500}}, e));
+        e.push_cell(c.clone());
     };
 }

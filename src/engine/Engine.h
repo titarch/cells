@@ -26,6 +26,7 @@ public:
 
     void draw_cells(sf::RenderWindow& w);
     void update_cells();
+    void update_physics();
     void run();
 
 protected:

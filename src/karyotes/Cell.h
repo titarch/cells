@@ -13,7 +13,7 @@
 
 class Cell {
 public:
-    Cell(float radius, Vec2f const& pos) : radius_(radius), pos_(pos) {};
+    Cell(float radius, Vec2f const& pos) : radius_(radius), pos_(pos), vel_() {};
 
     template<typename C>
     Cell& push_codon(C const& codon) {
@@ -27,16 +27,28 @@ public:
         return *this;
     }
 
-    float radius() const { return radius_; }
+    [[nodiscard]] float radius() const { return radius_; }
 
-    Vec2f pos() const { return pos_; }
+    [[nodiscard]] Vec2f pos() const { return pos_; }
+
+    void set_pos(Vec2f const& p) { pos_ = p; }
+
+    void add_pos(Vec2f const& p) { pos_ += p; }
+
+    [[nodiscard]] Vec2f vel() const { return vel_; }
+
+    void set_vel(Vec2f const& v) { vel_ = v; }
+
+    void add_vel(Vec2f const& v) { vel_ += v; }
+
+    void brake(float frot = 0.5) { vel_ *= frot; }
 
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow& w) const = 0;
 
 protected:
     float radius_;
-    Vec2f pos_;
+    Vec2f pos_, vel_;
     codons codons_;
 
     friend class Codon;

@@ -12,8 +12,9 @@
 
 
 class Codon {
-protected:
+public:
     Codon() = default;
+    virtual std::shared_ptr<Codon> clone() const = 0;
 };
 
 using codon_ptr = std::shared_ptr<Codon>;

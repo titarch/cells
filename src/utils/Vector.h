@@ -93,6 +93,12 @@ public:
         return *this;
     }
 
+    static Vector random() {
+        Vector v{};
+        std::generate(v.pts_.begin(), v.pts_.end(), []() -> T { return (T) std::rand() / RAND_MAX; });
+        return v;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, Vector const& v) {
         os << "( ";
         for (const T& e: v)
@@ -110,7 +116,6 @@ public:
 private:
     Ts pts_;
 };
-
 
 template<typename T, size_t D>
 inline Vector<T, D> operator+(Vector<T, D> lhs, Vector<T, D> const& rhs) {

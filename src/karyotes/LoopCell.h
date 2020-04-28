@@ -32,9 +32,16 @@ struct Hand {
 
 class LoopCell : public Cell {
 public:
-    LoopCell(float radius, Vec2f const& pos, int energy) : Cell(radius, pos), hand_(radius), energy_(energy), codon_idx_(0) {}
+    LoopCell(float radius, Vec2f const& pos, int energy) : Cell(radius, pos), hand_(radius), energy_(energy),
+                                                           codon_idx_(0) {}
 
-    LoopCell(LoopCell const& other) = default;
+    LoopCell clone() {
+        LoopCell copy(radius_, pos_, energy_);
+        copy.codons_.reserve(codons_.size());
+        std::transform(codons_.begin(), codons_.end(), std::back_inserter(copy.codons_),
+                       [](codon_ptr const& cp) -> codon_ptr { return cp->clone(); });
+        return copy;
+    }
 
     const loop_codon_ptr codon(size_t idx) const {
         return std::static_pointer_cast<LoopCodon>(codons_[idx]);
