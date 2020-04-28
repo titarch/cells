@@ -1,5 +1,8 @@
 #include <iostream>
+#include "engine/Engine.h"
 
 int main() {
-    std::cout << "Hello World!" << std::endl;
+    Engine e(1920, 1080);
+    e.push_cell(LoopCell::classic({500, 500}));
+    e.run();
 }
