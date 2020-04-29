@@ -58,8 +58,8 @@ action_func LoopCodon::repair(int cost) {
     };
 }
 
-sf::CircleShape LoopCodon::circle() const {
-    sf::CircleShape c(50 * vitality() / 5);
+sf::CircleShape LoopCodon::circle(float radius) const {
+    sf::CircleShape c(radius * vitality() / 5);
     c.setFillColor(sf::Color::Blue);
     return c;
 }

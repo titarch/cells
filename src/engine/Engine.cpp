@@ -23,14 +23,14 @@ void Engine::update_physics() {
             auto& cj = cells_[j];
             if ((ci->pos() - cj->pos()).sqrMagnitude() < 9 * ci->radius() * cj->radius()) {
                 auto n = (cj->pos() - ci->pos()).normalized();
-                if (auto nsq = n.sqrMagnitude(); nsq == 0 || std::isnan(nsq))
-                    n = Vec2f::random();
+                if (std::isnan(n.sqrMagnitude()))
+                    n = Vec2f::random().normalized();
                 ci->add_vel(-n);
                 cj->add_vel(n);
             }
         }
         ci->add_pos(ci->vel());
-        ci->brake();
+        ci->brake(0.5);
     }
 }
 

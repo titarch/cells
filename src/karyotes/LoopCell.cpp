@@ -35,11 +35,11 @@ void LoopCell::draw(sf::RenderWindow& w) const {
     sf::Color stat_color(255.f * (1.0 - status), 255.f * status, 0);
     circle.setOutlineThickness(radius_ / 5);
     circle.setOutlineColor(stat_color);
-    circle.setFillColor(sf::Color::Black);
+    circle.setFillColor(sf::Color::Transparent);
     w.draw(circle);
     draw_cursor(w);
     for (size_t i = 0u; i < codons_.size(); ++i) {
-        auto codon_circle = codon(i)->circle();
+        auto codon_circle = codon(i)->circle(radius_);
         auto pos = codon_draw_pos(i, 0.7);
         codon_circle.setPosition(pos.x() - radius_ / 5, pos.y() - radius_ / 5);
         w.draw(codon_circle);

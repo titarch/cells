@@ -24,9 +24,6 @@ public:
         return std::make_shared<LoopCodon>(*this);
     }
 
-public:
-
-
     action_func action() {
         if (durability_ <= 0) return noop(1);
         durability_ -= 5;
@@ -39,7 +36,7 @@ public:
 
     float vitality() const { return (float) durability_ / max_durability_; }
 
-    sf::CircleShape circle() const;
+    sf::CircleShape circle(float radius) const;
 
     static action_func noop(int cost);
     static action_func hand_inwards(int cost);
