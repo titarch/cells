@@ -8,6 +8,7 @@
 
 #include <memory>
 #include "Codon.h"
+#include "../particles/Particle.h"
 
 class LoopCell;
 class Engine;
@@ -41,7 +42,7 @@ public:
     static action_func noop(int cost);
     static action_func hand_inwards(int cost);
     static action_func hand_outwards(int cost);
-    static action_func eat(int reward);
+    static action_func eat(Engine& e);
     static action_func locate_weak(int cost);
     static action_func repair(int cost, int threshold);
     static action_func divide(Engine& e, int threshold);

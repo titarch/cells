@@ -18,9 +18,13 @@ public:
 
     void update() override;
 
+    [[nodiscard]] int reward() const { return reward_; };
+
 protected:
     int reward_;
 };
+
+using food_ptr = std::unique_ptr<Food>;
 
 
 #endif //CELLS_FOOD_H

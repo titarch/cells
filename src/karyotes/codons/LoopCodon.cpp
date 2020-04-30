@@ -5,6 +5,7 @@
 #include "../LoopCell.h"
 #include "../../engine/Engine.h"
 #include "LoopCodon.h"
+#include "../particles/Food.h"
 
 action_func LoopCodon::noop(int cost) {
     return [cost](LoopCell& c) {
@@ -26,10 +27,21 @@ action_func LoopCodon::hand_outwards(int cost) {
     };
 }
 
-action_func LoopCodon::eat(int reward) {
-    return [reward](LoopCell& c) {
+static int eat_particle(LoopCell const& c, particles& ps) {
+    for (auto& pt : ps) {
+        if ((pt->pos() - c.pos()).sqrMagnitude() <= c.radius() * c.radius()) {
+            auto p = ps.extract(pt);
+            return dynamic_cast<Food*>(p.value().get())->reward();
+        }
+    }
+    return 0;
+}
+
+action_func LoopCodon::eat(Engine& e) {
+    particles& ps = e.get_particles();
+    return [&ps](LoopCell& c) {
         if (c.hand_.inward) return;
-        c.energy_ += reward;
+        c.energy_ += eat_particle(c, ps);
     };
 }
 

@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include "../../utils/Vector.h"
 
 class Particle {
@@ -33,11 +34,13 @@ public:
         w.draw(c);
     }
 
+    [[nodiscard]] Vec2f pos() const { return pos_; }
+
 protected:
     Vec2f dim_, pos_, speed_;
 };
 
 using particle_ptr = std::unique_ptr<Particle>;
-using particles = std::vector<particle_ptr>;
+using particles = std::unordered_set<particle_ptr>;
 
 #endif //CELLS_PARTICLE_H

@@ -29,13 +29,13 @@ public:
 
     template<typename P>
     Engine& push_particle(P const& p) {
-        particles_.push_back(std::make_unique<P>(p));
+        particles_.insert(std::make_unique<P>(p));
         return *this;
     }
 
     template<typename P, typename ...Args>
     Engine& emplace_particle(Args ...args) {
-        particles_.push_back(std::make_unique<P>(args...));
+        particles_.insert(std::make_unique<P>(args...));
         return *this;
     }
 
@@ -45,6 +45,8 @@ public:
             emplace_particle<P>(args...);
         return *this;
     }
+
+    particles& get_particles() { return particles_; }
 
     void draw_scene(sf::RenderWindow& w);
     void update_cells();
