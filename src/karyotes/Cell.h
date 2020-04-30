@@ -6,8 +6,8 @@
 #define CELLS_CELL_H
 
 
-#include <vector>
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
 #include "codons/Codon.h"
 #include "../utils/Vector.h"
 
@@ -55,7 +55,7 @@ protected:
 };
 
 using cell_ptr = std::unique_ptr<Cell>;
-using cells = std::vector<cell_ptr>;
+using cells = std::unordered_set<cell_ptr>;
 
 
 #endif //CELLS_CELL_H

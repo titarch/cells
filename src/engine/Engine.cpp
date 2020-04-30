@@ -7,8 +7,8 @@
 #include "Engine.h"
 
 void Engine::update_cells() {
-    for (size_t i = 0u; i < cells_.size(); ++i)
-        cells_[i]->update();
+    for (auto const& cell : cells_)
+        cell->update();
 }
 
 void Engine::draw_scene(sf::RenderWindow& w) {
@@ -19,17 +19,14 @@ void Engine::draw_scene(sf::RenderWindow& w) {
 }
 
 void Engine::update_physics() {
-    for (size_t i = 0u; i < cells_.size(); ++i) {
-        auto& ci = cells_[i];
-        for (size_t j = i + 1; j < cells_.size(); ++j) {
-            auto& cj = cells_[j];
-            if ((ci->pos() - cj->pos()).sqrMagnitude() < 9 * ci->radius() * cj->radius()) {
-                auto n = (cj->pos() - ci->pos()).normalized();
-                if (std::isnan(n.sqrMagnitude()))
-                    n = Vec2f::random().normalized();
-                ci->add_vel(-n);
-                cj->add_vel(n);
-            }
+    for (auto const& ci : cells_) {
+        for (auto const& cj : cells_) {
+            if (ci == cj || (ci->pos() - cj->pos()).sqrMagnitude() >= 9 * ci->radius() * cj->radius())
+                continue;
+            auto n = (ci->pos() - cj->pos()).normalized();
+            if (std::isnan(n.sqrMagnitude()))
+                n = Vec2f::random().normalized();
+            ci->add_vel(n);
         }
         ci->add_pos(ci->vel());
         ci->brake(0.5);

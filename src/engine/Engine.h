@@ -17,13 +17,13 @@ public:
 
     template<typename C>
     Engine& push_cell(C const& c) {
-        cells_.push_back(std::make_unique<C>(c));
+        cells_.insert(std::make_unique<C>(c));
         return *this;
     }
 
     template<typename C, typename ...Args>
     Engine& emplace_cell(Args ...args) {
-        cells_.push_back(std::make_unique<C>(args...));
+        cells_.insert(std::make_unique<C>(args...));
         return *this;
     }
 
