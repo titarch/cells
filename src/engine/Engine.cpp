@@ -11,9 +11,11 @@ void Engine::update_cells() {
         cells_[i]->update();
 }
 
-void Engine::draw_cells(sf::RenderWindow& w) {
+void Engine::draw_scene(sf::RenderWindow& w) {
     for (auto const& c : cells_)
         c->draw(w);
+    for (auto const& p : particles_)
+        p->draw(w, 2);
 }
 
 void Engine::update_physics() {
@@ -32,6 +34,8 @@ void Engine::update_physics() {
         ci->add_pos(ci->vel());
         ci->brake(0.5);
     }
+    for (auto& particle : particles_)
+        particle->update();
 }
 
 void Engine::run() {
@@ -53,7 +57,7 @@ void Engine::run() {
             }
         }
         window.clear();
-        draw_cells(window);
+        draw_scene(window);
         window.display();
         update_cells();
         update_physics();

@@ -33,6 +33,10 @@ public:
         return copy;
     }
 
+    void clamp(T min, T max) {
+        std::transform(begin(), end(), begin(), [min, max] (T v) { return std::clamp(v, min, max); });
+    }
+
     T& operator[](size_t idx) {
         return pts_[idx];
     }
@@ -87,16 +91,39 @@ public:
         return *this;
     }
 
+    Vector& operator%=(Vector const& rhs) {
+        std::transform(begin(), end(), rhs.cbegin(), begin(), std::multiplies<T>());
+        return *this;
+    }
+
     Vector& operator^=(Vector const& rhs) {
         (void) rhs;
         throw "Cross product not implemented for dimension " + std::to_string(D);
         return *this;
     }
 
+    operator sf::Vector2f() const {
+        throw "sf::Vector2f conversion not implemented for dim other than 2";
+    }
+
+    static Vector fill(T val) {
+        Vector v{};
+        std::fill(v.begin(), v.end(), val);
+        return v;
+    }
+
+    static Vector one() {
+        return fill(1);
+    }
+
     static Vector random() {
         Vector v{};
-        std::generate(v.pts_.begin(), v.pts_.end(), []() -> T { return (T) std::rand() / RAND_MAX; });
+        std::generate(v.begin(), v.end(), []() -> T { return (T) std::rand() / RAND_MAX; });
         return v;
+    }
+
+    static Vector signed_random() {
+        return random() * (T)2 - one();
     }
 
     friend std::ostream& operator<<(std::ostream& os, Vector const& v) {
@@ -153,11 +180,21 @@ inline Vector<T, D> operator/(Vector<T, D> lhs, T rhs) {
 }
 
 template<typename T, size_t D>
+inline Vector<T, D> operator%(Vector<T, D> lhs, Vector<T, D> const& rhs) {
+    lhs %= rhs;
+    return lhs;
+}
+
+template<typename T, size_t D>
 inline Vector<T, D> operator^(Vector<T, D> lhs, Vector<T, D> const& rhs) {
     lhs ^= rhs;
     return lhs;
 }
 
 using Vec2f = Vector<float, 2>;
+
+template<> inline Vec2f::operator sf::Vector2f() const {
+    return {x(), y()};
+}
 
 #endif //CELLS_VECTOR_H
