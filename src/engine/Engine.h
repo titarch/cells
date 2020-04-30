@@ -48,6 +48,8 @@ public:
 
     particles& get_particles() { return particles_; }
 
+    cells& get_cells() { return cells_; }
+
     void draw_scene(sf::RenderWindow& w);
     void update_cells();
     void update_physics();

@@ -11,9 +11,11 @@
 #include "codons/Codon.h"
 #include "../utils/Vector.h"
 
+class Engine;
+
 class Cell {
 public:
-    Cell(float radius, Vec2f const& pos) : radius_(radius), pos_(pos), vel_() {};
+    Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_() {};
 
     template<typename C>
     Cell& push_codon(C const& codon) {
@@ -47,6 +49,7 @@ public:
     virtual void draw(sf::RenderWindow& w) const = 0;
 
 protected:
+    Engine& e_;
     float radius_;
     Vec2f pos_, vel_;
     codons codons_;
@@ -56,6 +59,5 @@ protected:
 
 using cell_ptr = std::unique_ptr<Cell>;
 using cells = std::unordered_set<cell_ptr>;
-
 
 #endif //CELLS_CELL_H

@@ -32,11 +32,11 @@ struct Hand {
 
 class LoopCell : public Cell {
 public:
-    LoopCell(float radius, Vec2f const& pos, int energy) : Cell(radius, pos), hand_(radius), energy_(energy),
+    LoopCell(Engine& e, float radius, Vec2f const& pos, int energy) : Cell(e, radius, pos), hand_(radius), energy_(energy),
                                                            codon_idx_(0) {}
 
     LoopCell clone() {
-        LoopCell copy(radius_, pos_, energy_);
+        LoopCell copy(e_, radius_, pos_, energy_);
         copy.codons_.reserve(codons_.size());
         std::transform(codons_.begin(), codons_.end(), std::back_inserter(copy.codons_),
                        [](codon_ptr const& cp) -> codon_ptr { return cp->clone(); });
@@ -76,11 +76,11 @@ public:
     void draw_cursor(sf::RenderWindow& w) const;
     void draw(sf::RenderWindow& w) const override;
 
-    static LoopCell classic(Vec2f const& pos, Engine& e) {
-        LoopCell c(50, pos, 50);
+    static LoopCell classic(Engine& e, Vec2f const& pos) {
+        LoopCell c(e, 50, pos, 50);
         c.push_codons({
                               LoopCodon::hand_outwards(2),
-                              LoopCodon::eat(e),
+                              LoopCodon::eat(),
                               LoopCodon::hand_inwards(2),
                               LoopCodon::locate_weak(3),
                               LoopCodon::repair(5, 10)
@@ -88,8 +88,8 @@ public:
         return c;
     }
 
-    static LoopCell dividable(Vec2f const& pos, Engine& e) {
-        LoopCell c = classic(pos, e);
+    static LoopCell dividable(Engine& e, Vec2f const& pos) {
+        LoopCell c = classic(e, pos);
         c.push_codons({LoopCodon::divide(e, 90)}, 100);
         return c;
     }

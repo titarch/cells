@@ -37,9 +37,9 @@ static int eat_particle(LoopCell const& c, particles& ps) {
     return 0;
 }
 
-action_func LoopCodon::eat(Engine& e) {
-    particles& ps = e.get_particles();
-    return [&ps](LoopCell& c) {
+action_func LoopCodon::eat() {
+    return [](LoopCell& c) {
+        particles& ps = c.e_.get_particles();
         if (c.hand_.inward) return;
         c.energy_ += eat_particle(c, ps);
     };
