@@ -80,7 +80,7 @@ public:
         LoopCell c(50, pos, 50);
         c.push_codons({
                               LoopCodon::hand_outwards(2),
-                              LoopCodon::eat(10),
+                              LoopCodon::eat(15),
                               LoopCodon::hand_inwards(2),
                               LoopCodon::locate_weak(3),
                               LoopCodon::repair(5, 10)
