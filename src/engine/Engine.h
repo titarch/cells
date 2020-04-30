@@ -11,7 +11,9 @@
 
 class Engine {
 public:
-    Engine(size_t w, size_t h) : w_(w), h_(h), cells_(), particles_() {}
+    Engine(size_t w, size_t h) : w_(w), h_(h), cells_(), particles_() {
+        std::srand(std::time(nullptr));
+    }
 
     template<typename C>
     Engine& push_cell(C const& c) {
