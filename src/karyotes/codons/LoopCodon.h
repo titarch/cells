@@ -43,7 +43,7 @@ public:
     static action_func hand_outwards(int cost);
     static action_func eat(int reward);
     static action_func locate_weak(int cost);
-    static action_func repair(int cost);
+    static action_func repair(int cost, int threshold);
     static action_func divide(Engine& e, int threshold);
 protected:
     int max_durability_, durability_;

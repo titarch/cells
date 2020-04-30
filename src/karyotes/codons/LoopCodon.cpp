@@ -38,6 +38,7 @@ action_func LoopCodon::locate_weak(int cost) {
         if (!c.hand_.inward) return;
         int min_dur = c.codon(0)->durability();
         size_t min_idx = 0u;
+        size_t cur_pos = c.hand_.pos;
         for (auto i = 1u; i < c.codons_.size(); ++i) {
             auto tmp_dur = c.codon(i)->durability();
             if (tmp_dur < min_dur) {
@@ -45,14 +46,15 @@ action_func LoopCodon::locate_weak(int cost) {
                 min_idx = i;
             }
         }
+        if (min_idx == cur_pos) return;
         c.hand_.pos = min_idx;
         c.energy_ -= cost;
     };
 }
 
-action_func LoopCodon::repair(int cost) {
-    return [cost](LoopCell& c) {
-        if (!c.hand_.inward) return;
+action_func LoopCodon::repair(int cost, int threshold) {
+    return [cost, threshold](LoopCell& c) {
+        if (!c.hand_.inward || c.energy_ < threshold) return;
         c.targeted_codon()->self_repair();
         c.energy_ -= cost;
     };
