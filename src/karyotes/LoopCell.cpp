@@ -3,14 +3,28 @@
 //
 
 #include <cmath>
+#include "../engine/Engine.h"
 #include "LoopCell.h"
+#include "particles/Food.h"
 
 
-void LoopCell::update() {
-    if (energy_ <= 0) return;
+cells::const_iterator LoopCell::update(cells::const_iterator cur) {
+    if (energy_ <= 0) return die();
     current_codon()->action()(*this);
     energy_ = std::clamp(energy_, 0, 100);
     move_codon();
+    return ++cur;
+}
+
+cells::const_iterator LoopCell::die() {
+    auto& cells = e_.get_cells();
+    for (auto c = cells.cbegin(); c != cells.cend(); ++c) {
+        if (c->get() == this) {
+            e_.add_particles<Food>(51, Vec2f{{1920, 1080}}, 1, 15);
+            return cells.erase(c);
+        }
+    }
+    return cells.cend();
 }
 
 Vec2f LoopCell::codon_draw_pos(size_t idx, float dist) const {
@@ -54,4 +68,3 @@ void LoopCell::draw(sf::RenderWindow& w) const {
     head_circle.rotate((float) hand_.pos * 360.f / codons_.size() - 30.f + (hand_.inward ? 180.f : 0.f));
     w.draw(head_circle);
 }
-

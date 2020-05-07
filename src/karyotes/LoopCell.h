@@ -32,8 +32,9 @@ struct Hand {
 
 class LoopCell : public Cell {
 public:
-    LoopCell(Engine& e, float radius, Vec2f const& pos, int energy) : Cell(e, radius, pos), hand_(radius), energy_(energy),
-                                                           codon_idx_(0) {}
+    LoopCell(Engine& e, float radius, Vec2f const& pos, int energy) : Cell(e, radius, pos), hand_(radius),
+                                                                      energy_(energy),
+                                                                      codon_idx_(0) {}
 
     LoopCell clone() {
         LoopCell copy(e_, radius_, pos_, energy_);
@@ -61,16 +62,15 @@ public:
 
     void move_codon() { codon_idx_ = (codon_idx_ + 1) % codons_.size(); }
 
-    void die() {
-        std::cout << "Please implement dying..." << std::endl;
-    }
 
     void push_codons(action_funcs const& actions, int durability) {
         for (auto const& f : actions)
             emplace_codon<LoopCodon>(durability, f);
     }
 
-    void update() override;
+    cells::const_iterator update(cells::const_iterator cur) override;
+
+    cells::const_iterator die();
 
     Vec2f codon_draw_pos(size_t idx, float dist) const;
     void draw_cursor(sf::RenderWindow& w) const;

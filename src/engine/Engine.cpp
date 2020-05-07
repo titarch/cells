@@ -7,8 +7,8 @@
 #include "Engine.h"
 
 void Engine::update_cells() {
-    for (auto const& cell : cells_)
-        cell->update();
+    for (auto it = cells_.cbegin(); it != cells_.cend();)
+        it = it->get()->update(it);
 }
 
 void Engine::draw_scene(sf::RenderWindow& w) {

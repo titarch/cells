@@ -13,6 +13,11 @@
 
 class Engine;
 
+class Cell;
+
+using cell_ptr = std::unique_ptr<Cell>;
+using cells = std::unordered_set<cell_ptr>;
+
 class Cell {
 public:
     Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_() {};
@@ -45,7 +50,7 @@ public:
 
     void brake(float frot = 0.5) { vel_ *= frot; }
 
-    virtual void update() = 0;
+    virtual cells::const_iterator update(cells::const_iterator cur) = 0;
     virtual void draw(sf::RenderWindow& w) const = 0;
 
 protected:
@@ -57,7 +62,5 @@ protected:
     friend class Codon;
 };
 
-using cell_ptr = std::unique_ptr<Cell>;
-using cells = std::unordered_set<cell_ptr>;
 
 #endif //CELLS_CELL_H
