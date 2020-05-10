@@ -21,6 +21,7 @@ using cells = std::unordered_set<cell_ptr>;
 class Cell {
 public:
     Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_() {};
+    virtual ~Cell() = default;
 
     template<typename C>
     Cell& push_codon(C const& codon) {

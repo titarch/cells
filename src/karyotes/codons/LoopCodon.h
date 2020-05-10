@@ -11,6 +11,7 @@
 #include "../particles/Particle.h"
 
 class LoopCell;
+
 class Engine;
 
 using action_func = std::function<void(LoopCell&)>;
@@ -20,6 +21,8 @@ class LoopCodon : public Codon {
 public:
     explicit LoopCodon(int durability, action_func action = noop(1))
             : Codon(), max_durability_(durability), durability_(durability), action_(std::move(action)) {}
+
+    ~LoopCodon() override = default;
 
     codon_ptr clone() const override {
         return std::make_shared<LoopCodon>(*this);

@@ -12,6 +12,8 @@ class Food : public Particle {
 public:
     Food(const Vec2f& dim, float speed, int reward) : Particle(dim, speed), reward_(reward) {}
 
+    ~Food() override = default;
+
     sf::Color color() override {
         return sf::Color::Green;
     }

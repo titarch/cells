@@ -34,7 +34,7 @@ public:
     }
 
     void clamp(T min, T max) {
-        std::transform(begin(), end(), begin(), [min, max] (T v) { return std::clamp(v, min, max); });
+        std::transform(begin(), end(), begin(), [min, max](T v) { return std::clamp(v, min, max); });
     }
 
     T& operator[](size_t idx) {
@@ -118,12 +118,12 @@ public:
 
     static Vector random() {
         Vector v{};
-        std::generate(v.begin(), v.end(), []() -> T { return (T) std::rand() / RAND_MAX; });
+        std::generate(v.begin(), v.end(), []() -> T { return (T) std::rand() / (T) RAND_MAX; });
         return v;
     }
 
     static Vector signed_random() {
-        return random() * (T)2 - one();
+        return random() * (T) 2 - one();
     }
 
     friend std::ostream& operator<<(std::ostream& os, Vector const& v) {
@@ -193,7 +193,8 @@ inline Vector<T, D> operator^(Vector<T, D> lhs, Vector<T, D> const& rhs) {
 
 using Vec2f = Vector<float, 2>;
 
-template<> inline Vec2f::operator sf::Vector2f() const {
+template<>
+inline Vec2f::operator sf::Vector2f() const {
     return {x(), y()};
 }
 

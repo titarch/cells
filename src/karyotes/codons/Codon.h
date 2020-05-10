@@ -14,6 +14,7 @@
 class Codon {
 public:
     Codon() = default;
+    virtual ~Codon() = default;
     virtual std::shared_ptr<Codon> clone() const = 0;
 };
 

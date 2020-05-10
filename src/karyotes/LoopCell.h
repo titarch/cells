@@ -36,6 +36,8 @@ public:
                                                                       energy_(energy),
                                                                       codon_idx_(0) {}
 
+    ~LoopCell() override = default;
+
     LoopCell clone() {
         LoopCell copy(e_, radius_, pos_, energy_);
         copy.codons_.reserve(codons_.size());
