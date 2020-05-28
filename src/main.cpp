@@ -4,7 +4,7 @@
 
 int main() {
     Engine e(1920, 1080);
-    e.push_cell(LoopCell::dividable(e, {{500, 500}}));
+    e.push_cell(LoopCell::dividable(e, {{1920/2, 1080/2}}));
     e.add_particles<Food>(2000, Vec2f{{1920, 1080}}, 5, 15);
     e.run();
 }

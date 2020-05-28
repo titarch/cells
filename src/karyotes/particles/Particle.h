@@ -16,14 +16,31 @@ class Particle {
 public:
     explicit Particle(Vec2f const& dim, float speed) : dim_(dim), pos_(dim % Vec2f::random()),
                                                        speed_(Vec2f::signed_random().normalized() * speed) {}
+
     virtual ~Particle() = default;
 
     virtual void update() {
         pos_ += speed_;
-        if (pos_.x() < 0) speed_[0] = -speed_.x();
-        if (pos_.x() >= dim_.x()) speed_[0] = -speed_.x();
-        if (pos_.y() < 0) speed_[1] = -speed_.y();
-        if (pos_.y() >= dim_.y()) speed_[1] = -speed_.y();
+
+        static auto high = 0.6;
+        static auto low = 1.0 - high;
+
+        if (pos_.x() < dim_.x() * low) {
+            speed_[0] = -speed_.x();
+            pos_[0] = dim_.x() * low;
+        }
+        if (pos_.x() >= dim_.x() * high) {
+            speed_[0] = -speed_.x();
+            pos_[0] = dim_.x() * high;
+        }
+        if (pos_.y() < dim_.y() * low) {
+            speed_[1] = -speed_.y();
+            pos_[1] = dim_.y() * low;
+        }
+        if (pos_.y() >= dim_.y() * high) {
+            speed_[1] = -speed_.y();
+            pos_[1] = dim_.y() * high;
+        }
     }
 
     virtual sf::Color color() = 0;

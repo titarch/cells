@@ -12,7 +12,7 @@
 class Engine {
 public:
     Engine(size_t w, size_t h) : w_(w), h_(h), cells_(), particles_() {
-        std::srand(std::time(nullptr));
+        std::srand(0);
     }
 
     template<typename C>
