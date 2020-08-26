@@ -36,13 +36,6 @@ public:
         return *this;
     }
 
-    Cell& inject_codons(codons&& foreign_codons) {
-        codons_.reserve(codons_.size() + foreign_codons.size());
-        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
-        infected_ = true;
-        return *this;
-    }
-
     [[nodiscard]] float radius() const { return radius_; }
 
     [[nodiscard]] Vec2f pos() const { return pos_; }

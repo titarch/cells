@@ -44,7 +44,7 @@ viruses::const_iterator Virus::infect(cell_ptr cell) {
     auto& viruses = e_.get_viruses();
     for (auto v = viruses.cbegin(); v != viruses.cend(); ++v) {
         if (v->get() == this) {
-            cell->inject_codons(std::move(codons_));
+            std::dynamic_pointer_cast<LoopCell>(cell)->inject_codons(std::move(codons_));
             return viruses.erase(v);
         }
     }

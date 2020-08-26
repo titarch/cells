@@ -68,10 +68,17 @@ public:
 
     void move_codon() { codon_idx_ = (codon_idx_ + 1) % codons_.size(); }
 
-
     void push_codons(action_funcs const& actions, int durability) {
         for (auto const& f : actions)
             emplace_codon<LoopCodon>(durability, f);
+    }
+
+    LoopCell& inject_codons(codons&& foreign_codons) {
+        codons_.reserve(codons_.size() + foreign_codons.size());
+        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
+        infected_ = true;
+        food_accumulated_ += foreign_codons.size();
+        return *this;
     }
 
     LoopCell& overwrite_codons(codons&& foreign_codons) {
