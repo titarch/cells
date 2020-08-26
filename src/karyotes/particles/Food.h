@@ -18,7 +18,7 @@ public:
         return sf::Color::Green;
     }
 
-    void update() override;
+    void update(float dt) override;
 
     [[nodiscard]] int reward() const { return reward_; };
 

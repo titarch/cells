@@ -6,7 +6,22 @@
 #include <cmath>
 #include "Engine.h"
 
+void Engine::update_time() {
+    dt_ = clock_.restart();
+}
+
+float Engine::dt() const {
+    return dt_.asSeconds();
+}
+
 void Engine::update_cells() {
+    static const auto idle_time = 1.f / (float) ups_;
+    static auto elapsed_time = 0.f;
+    elapsed_time += dt();
+    if (elapsed_time < idle_time)
+        return;
+    elapsed_time = 0.f;
+
     for (auto it = cells_.cbegin(); it != cells_.cend();)
         it = it->get()->update(it);
 }
@@ -28,11 +43,11 @@ void Engine::update_physics() {
                 n = Vec2f::random().normalized();
             ci->add_vel(n);
         }
-        ci->add_pos(ci->vel());
-        ci->brake(0.5);
+        ci->add_pos(ci->vel() * 25.f * dt());
+        ci->brake(std::clamp(1.f - dt() * 25.f, 0.f, 1.f));
     }
     for (auto& particle : particles_)
-        particle->update();
+        particle->update(dt());
 }
 
 void Engine::run() {
@@ -58,6 +73,7 @@ void Engine::run() {
         window.display();
         update_cells();
         update_physics();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+//        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        update_time();
     }
 }

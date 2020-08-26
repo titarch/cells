@@ -20,7 +20,7 @@ cells::const_iterator LoopCell::die() {
     auto& cells = e_.get_cells();
     for (auto c = cells.cbegin(); c != cells.cend(); ++c) {
         if (c->get() == this) {
-            e_.add_particles<Food>(51, Vec2f{{1920, 1080}}, 1, 15);
+            e_.add_particles<Food>(51, Vec2f{{1920, 1080}}, 50, 15);
             return cells.erase(c);
         }
     }

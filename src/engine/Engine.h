@@ -11,7 +11,7 @@
 
 class Engine {
 public:
-    Engine(size_t w, size_t h) : w_(w), h_(h), cells_(), particles_() {
+    Engine(size_t w, size_t h, unsigned ups) : w_(w), h_(h), ups_(ups), cells_(), particles_(), clock_{}, dt_() {
         std::srand(0);
     }
 
@@ -50,6 +50,8 @@ public:
 
     cells& get_cells() { return cells_; }
 
+    void update_time();
+    float dt() const;
     void draw_scene(sf::RenderWindow& w);
     void update_cells();
     void update_physics();
@@ -57,8 +59,11 @@ public:
 
 protected:
     size_t w_, h_;
+    unsigned ups_;
     cells cells_;
     particles particles_;
+    sf::Clock clock_;
+    sf::Time dt_;
 };
 
 

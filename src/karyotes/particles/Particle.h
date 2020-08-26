@@ -19,8 +19,8 @@ public:
 
     virtual ~Particle() = default;
 
-    virtual void update() {
-        pos_ += speed_;
+    virtual void update(float dt) {
+        pos_ += speed_ * dt;
 
         static auto high = 0.6;
         static auto low = 1.0 - high;

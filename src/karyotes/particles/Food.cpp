@@ -4,6 +4,6 @@
 
 #include "Food.h"
 
-void Food::update() {
-    Particle::update();
+void Food::update(float dt) {
+    Particle::update(dt);
 }
