@@ -14,6 +14,27 @@ cell_ptr Virus::collides() const {
 
 viruses::const_iterator Virus::update(viruses::const_iterator cur, float dt) {
     pos_ += vel_ * dt;
+    static auto high = 1.0;
+    static auto low = 1.0 - high;
+
+    static auto const& dim = e_.dim();
+    if (pos_.x() < dim.x() * low) {
+        vel_[0] = -vel_.x();
+        pos_[0] = dim.x() * low;
+    }
+    if (pos_.x() >= dim.x() * high) {
+        vel_[0] = -vel_.x();
+        pos_[0] = dim.x() * high;
+    }
+    if (pos_.y() < dim.y() * low) {
+        vel_[1] = -vel_.y();
+        pos_[1] = dim.y() * low;
+    }
+    if (pos_.y() >= dim.y() * high) {
+        vel_[1] = -vel_.y();
+        pos_[1] = dim.y() * high;
+    }
+
     if (auto cell = collides(); cell)
         return infect(std::move(cell));
     return ++cur;
