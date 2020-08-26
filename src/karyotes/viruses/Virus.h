@@ -93,8 +93,9 @@ public:
         v.push_codons({
             LoopCodon::hand_inwards(2),
             LoopCodon::active_loc(1),
-            LoopCodon::read(2, -1, 3),
+            LoopCodon::read(2, -1, 4),
             LoopCodon::hand_outwards(2),
+            LoopCodon::eat(),
             LoopCodon::write(2)
         });
         return v;
