@@ -58,7 +58,7 @@ void LoopCell::draw(sf::RenderWindow& w) const {
         codon_circle.setPosition(pos.x() - radius_ / 5, pos.y() - radius_ / 5);
         w.draw(codon_circle);
     }
-    auto hand_circle = hand_.circle();
+    auto hand_circle = hand_.circle(infected_ ? sf::Color::Yellow : sf::Color::Cyan);
     hand_circle.setPosition(pos_.x() - radius_ - radius_ / 2, pos_.y() - radius_ - radius_ / 2);
     w.draw(hand_circle);
     auto head_circle = sf::CircleShape(radius_ / 5, 3);

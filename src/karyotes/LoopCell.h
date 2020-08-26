@@ -21,9 +21,9 @@ struct Hand {
 
     void set_outwards() { set_inwards(false); }
 
-    sf::CircleShape circle() const {
+    sf::CircleShape circle(sf::Color const& color) const {
         sf::CircleShape c(radius + radius / 2);
-        c.setOutlineColor(sf::Color::Cyan);
+        c.setOutlineColor(color);
         c.setOutlineThickness(radius / 10);
         c.setFillColor({0, 0, 0, 0});
         return c;
