@@ -22,7 +22,7 @@ public:
     virtual void update(float dt) {
         pos_ += speed_ * dt;
 
-        static auto high = 0.6;
+        static auto high = 1.0;
         static auto low = 1.0 - high;
 
         if (pos_.x() < dim_.x() * low) {

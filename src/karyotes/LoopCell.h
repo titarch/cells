@@ -33,7 +33,7 @@ struct Hand {
 class LoopCell : public Cell {
 public:
     LoopCell(Engine& e, float radius, Vec2f const& pos, int energy) : Cell(e, radius, pos), hand_(radius),
-                                                                      energy_(energy),
+                                                                      energy_(energy), food_accumulated_(0),
                                                                       codon_idx_(0) {}
 
     ~LoopCell() override = default;
@@ -99,6 +99,7 @@ public:
 protected:
     Hand hand_;
     int energy_;
+    unsigned food_accumulated_;
     size_t codon_idx_;
 
     friend class LoopCodon;

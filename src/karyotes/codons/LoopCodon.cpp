@@ -27,10 +27,11 @@ action_func LoopCodon::hand_outwards(int cost) {
     };
 }
 
-static int eat_particle(LoopCell const& c, particles& ps) {
+static int eat_particle(LoopCell const& c, particles& ps, unsigned& food_count) {
     for (auto& pt : ps) {
         if ((pt->pos() - c.pos()).sqrMagnitude() <= c.radius() * c.radius()) {
             auto p = ps.extract(pt);
+            ++food_count;
             return dynamic_cast<Food*>(p.value().get())->reward();
         }
     }
@@ -39,9 +40,9 @@ static int eat_particle(LoopCell const& c, particles& ps) {
 
 action_func LoopCodon::eat() {
     return [](LoopCell& c) {
-        particles& ps = c.e_.get_particles();
         if (c.hand_.inward) return;
-        c.energy_ += eat_particle(c, ps);
+        particles& ps = c.e_.get_particles();
+        c.energy_ += eat_particle(c, ps, c.food_accumulated_);
     };
 }
 
@@ -83,7 +84,7 @@ static sf::Color hsv(int hue, float sat, float val) {
     if (val > 1.f) val = 1.f;
 
     int h = hue / 60;
-    float f = float(hue) / 60 - (float)h;
+    float f = float(hue) / 60 - (float) h;
     float p = val * (1.f - sat);
     float q = val * (1.f - sat * f);
     float t = val * (1.f - sat * (1 - f));

@@ -73,7 +73,6 @@ void Engine::run() {
         window.display();
         update_cells();
         update_physics();
-//        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         update_time();
     }
 }
