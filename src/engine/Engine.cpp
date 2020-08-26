@@ -26,9 +26,12 @@ void Engine::update_cells() {
         it = it->get()->update(it);
 }
 
+
 void Engine::draw_scene(sf::RenderWindow& w) {
     for (auto const& c : cells_)
         c->draw(w);
+    for (auto const& v : viruses_)
+        v->draw(w);
     for (auto const& p : particles_)
         p->draw(w, 2);
 }
@@ -46,6 +49,8 @@ void Engine::update_physics() {
         ci->add_pos(ci->vel() * 25.f * dt());
         ci->brake(std::clamp(1.f - dt() * 25.f, 0.f, 1.f));
     }
+    for (auto it = viruses_.cbegin(); it != viruses_.cend();)
+        it = it->get()->update(it, dt());
     for (auto& particle : particles_)
         particle->update(dt());
 }

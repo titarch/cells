@@ -15,12 +15,12 @@ class Engine;
 
 class Cell;
 
-using cell_ptr = std::unique_ptr<Cell>;
+using cell_ptr = std::shared_ptr<Cell>;
 using cells = std::unordered_set<cell_ptr>;
 
 class Cell {
 public:
-    Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_() {};
+    Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_(), codons_() {};
     virtual ~Cell() = default;
 
     template<typename C>
@@ -32,6 +32,12 @@ public:
     template<typename C, typename ...Args>
     Cell& emplace_codon(Args... args) {
         codons_.push_back(std::make_shared<C>(args...));
+        return *this;
+    }
+
+    Cell& inject_codons(codons&& foreign_codons) {
+        codons_.reserve(codons_.size() + foreign_codons.size());
+        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
         return *this;
     }
 

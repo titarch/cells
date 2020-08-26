@@ -7,11 +7,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "../karyotes/LoopCell.h"
+#include "../karyotes/viruses/Virus.h"
 #include "../karyotes/particles/Particle.h"
 
 class Engine {
 public:
-    Engine(size_t w, size_t h, unsigned ups) : w_(w), h_(h), ups_(ups), cells_(), particles_(), clock_{}, dt_() {
+    Engine(size_t w, size_t h, unsigned ups) : w_(w), h_(h), ups_(ups),
+                                               cells_(), viruses_(), particles_(),
+                                               clock_{}, dt_() {
         std::srand(0);
     }
 
@@ -46,9 +49,23 @@ public:
         return *this;
     }
 
-    particles& get_particles() { return particles_; }
+    template<typename V>
+    Engine& push_virus(V const& v) {
+        viruses_.insert(std::make_unique<V>(v));
+        return *this;
+    }
+
+    template<typename V, typename ...Args>
+    Engine& emplace_virus(Args ...args) {
+        viruses_.insert(std::make_unique<V>(args...));
+        return *this;
+    }
 
     cells& get_cells() { return cells_; }
+
+    viruses& get_viruses() { return viruses_; }
+
+    particles& get_particles() { return particles_; }
 
     void update_time();
     float dt() const;
@@ -61,6 +78,7 @@ protected:
     size_t w_, h_;
     unsigned ups_;
     cells cells_;
+    viruses viruses_;
     particles particles_;
     sf::Clock clock_;
     sf::Time dt_;
