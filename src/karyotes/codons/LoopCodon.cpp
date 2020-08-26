@@ -73,6 +73,41 @@ action_func LoopCodon::repair(int cost, int threshold) {
     };
 }
 
+action_func LoopCodon::active_loc(int cost) {
+    return [cost](LoopCell& c) {
+        c.hand_.pos = c.codon_idx_;
+        c.energy_ -= cost;
+    };
+}
+
+action_func LoopCodon::read(int cost, int start, int end) {
+    return [cost, start, end](LoopCell& c) {
+        if (!c.hand_.inward) return;
+        for (auto i = (int)c.hand_pos() + start; i <= (int)c.hand_pos() + end; ++i) {
+            int codon_idx = i % (int) c.codons_.size();
+            if (codon_idx < 0) codon_idx += c.codons_.size();
+            auto codon = std::dynamic_pointer_cast<LoopCodon>(c.codons_[codon_idx]->clone());
+            codon->self_repair();
+            c.memory_.push_back(std::move(codon));
+        }
+        c.energy_ -= cost;
+    };
+}
+
+action_func LoopCodon::write(int cost) {
+    return [cost](LoopCell& c) {
+        if (c.hand_.inward)
+            c.overwrite_codons(std::move(c.memory_));
+        else {
+            auto virus = std::make_unique<Virus>(c.e_, c.pos());
+            virus->inject_codons(std::move(c.memory_));
+            c.e_.push_virus(std::move(virus));
+        }
+        c.memory_.clear();
+        c.energy_ -= cost;
+    };
+}
+
 static sf::Color hsv(int hue, float sat, float val) {
     hue %= 360;
     while (hue < 0) hue += 360;

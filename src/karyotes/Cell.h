@@ -20,7 +20,8 @@ using cells = std::unordered_set<cell_ptr>;
 
 class Cell {
 public:
-    Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius), pos_(pos), vel_(), codons_() {};
+    Cell(Engine& e, float radius, Vec2f const& pos) : e_(e), radius_(radius),
+                                                      pos_(pos), vel_(), codons_(), infected_(false) {};
     virtual ~Cell() = default;
 
     template<typename C>
@@ -38,12 +39,15 @@ public:
     Cell& inject_codons(codons&& foreign_codons) {
         codons_.reserve(codons_.size() + foreign_codons.size());
         std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
+        infected_ = true;
         return *this;
     }
 
     [[nodiscard]] float radius() const { return radius_; }
 
     [[nodiscard]] Vec2f pos() const { return pos_; }
+
+    [[nodiscard]] bool infected() const { return infected_; }
 
     void set_pos(Vec2f const& p) { pos_ = p; }
 
@@ -65,6 +69,7 @@ protected:
     float radius_;
     Vec2f pos_, vel_;
     codons codons_;
+    bool infected_;
 
     friend class Codon;
 };

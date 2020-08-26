@@ -192,6 +192,7 @@ inline Vector<T, D> operator^(Vector<T, D> lhs, Vector<T, D> const& rhs) {
 }
 
 using Vec2f = Vector<float, 2>;
+using Vec2z = Vector<size_t, 2>;
 
 template<>
 inline Vec2f::operator sf::Vector2f() const {

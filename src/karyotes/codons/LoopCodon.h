@@ -48,6 +48,9 @@ public:
     static action_func eat();
     static action_func locate_weak(int cost);
     static action_func repair(int cost, int threshold);
+    static action_func active_loc(int cost);
+    static action_func read(int cost, int start, int end);
+    static action_func write(int cost);
     static action_func divide(Engine& e, int threshold);
 protected:
     int max_durability_, durability_;

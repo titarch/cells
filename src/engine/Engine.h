@@ -55,10 +55,19 @@ public:
         return *this;
     }
 
+    Engine& push_virus(virus_ptr v) {
+        viruses_.insert(std::move(v));
+        return *this;
+    }
+
     template<typename V, typename ...Args>
     Engine& emplace_virus(Args ...args) {
         viruses_.insert(std::make_unique<V>(args...));
         return *this;
+    }
+
+    [[nodiscard]] Vec2f dim() const {
+        return {{(float)w_, (float)h_}};
     }
 
     cells& get_cells() { return cells_; }

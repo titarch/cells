@@ -34,7 +34,7 @@ class LoopCell : public Cell {
 public:
     LoopCell(Engine& e, float radius, Vec2f const& pos, int energy) : Cell(e, radius, pos), hand_(radius),
                                                                       energy_(energy), food_accumulated_(0),
-                                                                      codon_idx_(0) {}
+                                                                      codon_idx_(0), memory_() {}
 
     ~LoopCell() override = default;
 
@@ -62,12 +62,22 @@ public:
         return hand_.inward ? codon(hand_.pos) : nullptr;
     }
 
+    size_t hand_pos() const {
+        return hand_.pos;
+    }
+
     void move_codon() { codon_idx_ = (codon_idx_ + 1) % codons_.size(); }
 
 
     void push_codons(action_funcs const& actions, int durability) {
         for (auto const& f : actions)
             emplace_codon<LoopCodon>(durability, f);
+    }
+
+    LoopCell& overwrite_codons(codons&& foreign_codons) {
+        for (unsigned i = 0u; i < foreign_codons.size(); ++i)
+            codons_[(i + hand_pos()) % codons_.size()] = std::move(foreign_codons[i]);
+        return *this;
     }
 
     cells::const_iterator update(cells::const_iterator cur) override;
@@ -85,7 +95,9 @@ public:
                               LoopCodon::eat(),
                               LoopCodon::hand_inwards(2),
                               LoopCodon::locate_weak(3),
-                              LoopCodon::repair(5, 10)
+                              LoopCodon::read(2, 0, 0),
+                              LoopCodon::write(2)
+//                              LoopCodon::repair(5, 10)
                       }, 100);
         return c;
     }
@@ -101,6 +113,7 @@ protected:
     int energy_;
     unsigned food_accumulated_;
     size_t codon_idx_;
+    codons memory_;
 
     friend class LoopCodon;
 };

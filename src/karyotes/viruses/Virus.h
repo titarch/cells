@@ -23,7 +23,9 @@ using viruses = std::unordered_set<virus_ptr>;
 
 class Virus {
 public:
-    Virus(Engine& e, Vec2f pos, Vec2f vel) : e_(e), radius_(10.f), pos_(pos), vel_(vel) {}
+    Virus(Engine& e, Vec2f const& pos, Vec2f const& vel) : e_(e), radius_(10.f), pos_(pos), vel_(vel) {}
+
+    Virus(Engine& e, Vec2f const& pos) : Virus(e, pos, Vec2f::signed_random().normalized() * 50.f) {}
 
     template<typename C>
     Virus& push_codon(C const& codon) {
@@ -34,6 +36,12 @@ public:
     template<typename C, typename ...Args>
     Virus& emplace_codon(Args... args) {
         codons_.push_back(std::make_shared<C>(args...));
+        return *this;
+    }
+
+    Virus& inject_codons(codons&& foreign_codons) {
+        codons_.reserve(codons_.size() + foreign_codons.size());
+        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
         return *this;
     }
 
@@ -77,6 +85,18 @@ public:
         v.push_codons({
                               LoopCodon::hand_outwards(50)
                       });
+        return v;
+    }
+
+    static Virus replicator(Engine& e, Vec2f const& pos, Vec2f const& vel) {
+        Virus v(e, pos, vel);
+        v.push_codons({
+            LoopCodon::hand_inwards(2),
+            LoopCodon::active_loc(1),
+            LoopCodon::read(2, -1, 3),
+            LoopCodon::hand_outwards(2),
+            LoopCodon::write(2)
+        });
         return v;
     }
 
