@@ -43,7 +43,8 @@ void LoopCell::draw_cursor(sf::RenderWindow& w) const {
 }
 
 void LoopCell::draw(sf::RenderWindow& w) const {
-    static sf::CircleShape circle(radius_);
+    static sf::CircleShape circle{};
+    circle.setRadius(radius_);
     circle.setPosition(pos_.x() - radius_, pos_.y() - radius_);
     float status = std::clamp((float) energy_ / 100, 0.f, 1.f);
     sf::Color stat_color(255.f * (1.0 - status), 255.f * status, 0);
