@@ -43,6 +43,10 @@ public:
         copy.codons_.reserve(codons_.size());
         std::transform(codons_.begin(), codons_.end(), std::back_inserter(copy.codons_),
                        [](codon_ptr const& cp) -> codon_ptr { return cp->clone(); });
+        const auto total_food = food_accumulated_;
+        food_accumulated_ = (total_food + 1) / 2;
+        copy.food_accumulated_ = total_food / 2;
+        copy.infected_ = infected_;
         return copy;
     }
 
