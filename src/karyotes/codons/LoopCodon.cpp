@@ -82,6 +82,7 @@ action_func LoopCodon::active_loc(int cost) {
 
 action_func LoopCodon::read(int cost, int start, int end) {
     return [cost, start, end](LoopCell& c) {
+        c.memory_.clear();
         if (!c.hand_.inward) return;
         for (auto i = (int) c.hand_pos() + start; i <= (int) c.hand_pos() + end; ++i) {
             int codon_idx = i % (int) c.codons_.size();
