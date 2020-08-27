@@ -99,10 +99,8 @@ action_func LoopCodon::write(int cost) {
         if (c.hand_.inward)
             c.overwrite_codons(std::move(c.memory_));
         else {
-            if (c.food_accumulated_ < c.memory_.size()) return;
-            c.food_accumulated_ -= c.memory_.size();
             auto virus = std::make_unique<Virus>(c.e_, c.pos());
-            virus->inject_codons(std::move(c.memory_));
+            virus->inject_codons(std::move(c.memory_), c.food_accumulated_);
             c.e_.push_virus(std::move(virus));
         }
         c.memory_.clear();

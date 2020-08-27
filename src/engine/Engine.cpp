@@ -5,6 +5,7 @@
 #include <thread>
 #include <cmath>
 #include "Engine.h"
+#include "../karyotes/particles/Food.h"
 
 void Engine::update_time() {
     dt_ = clock_.restart();

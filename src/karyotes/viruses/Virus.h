@@ -39,9 +39,11 @@ public:
         return *this;
     }
 
-    Virus& inject_codons(codons&& foreign_codons) {
-        codons_.reserve(codons_.size() + foreign_codons.size());
-        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
+    Virus& inject_codons(codons&& foreign_codons, unsigned& food) {
+        auto size = foreign_codons.size() < food ? foreign_codons.size() : food;
+        codons_.reserve(codons_.size() + size);
+        std::move(foreign_codons.begin(), foreign_codons.begin() + size, std::back_inserter(codons_));
+        food -= size;
         return *this;
     }
 
