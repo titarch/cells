@@ -7,13 +7,13 @@
 
 cell_ptr Virus::collides() const {
     for (auto& cell : e_.get_cells())
-        if (!cell->infected() && (pos_ - cell->pos()).sqrMagnitude() < 3 * cell->radius() * radius_)
+        if ((pos_ - cell->pos()).sqrMagnitude() < 3 * cell->radius() * radius_)
             return cell;
     return cell_ptr();
 }
 
 viruses::const_iterator Virus::update(viruses::const_iterator cur, float dt) {
-    pos_ += vel_ * dt;
+    pos_ += vel_ * dt * 5.f;
     static auto high = 1.0;
     static auto low = 1.0 - high;
 
