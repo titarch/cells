@@ -82,7 +82,11 @@ public:
         food_accumulated_ += foreign_codons.size();
         if (infected_) return *this;
         codons_.reserve(codons_.size() + foreign_codons.size());
-        std::move(foreign_codons.begin(), foreign_codons.end(), std::back_inserter(codons_));
+        codons_.insert(
+                codons_.begin() + codon_idx_,
+                std::make_move_iterator(foreign_codons.begin()),
+                std::make_move_iterator(foreign_codons.end())
+        );
         infected_ = true;
         return *this;
     }
