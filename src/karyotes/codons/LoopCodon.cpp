@@ -97,16 +97,18 @@ action_func LoopCodon::read(int cost, int start, int end) {
 
 action_func LoopCodon::write(int cost) {
     return [cost](LoopCell& c) {
+        codons memory_tmp(c.memory_.size());
+        std::transform(c.memory_.cbegin(), c.memory_.cend(), memory_tmp.begin(),
+                       [](codon_ptr const& codon) { return codon->clone(); });
         if (c.hand_.inward)
-            c.overwrite_codons(std::move(c.memory_));
+            c.overwrite_codons(std::move(memory_tmp));
         else {
-            if (c.food_accumulated_ < c.memory_.size() || c.memory_.empty()) return;
-            c.food_accumulated_ -= c.memory_.size();
+            if (c.food_accumulated_ < memory_tmp.size() || memory_tmp.empty()) return;
+            c.food_accumulated_ -= memory_tmp.size();
             auto virus = std::make_unique<Virus>(c.e_, c.codon_draw_pos(c.hand_pos(), 2));
-            virus->inject_codons(std::move(c.memory_));
+            virus->inject_codons(std::move(memory_tmp));
             c.e_.push_virus(std::move(virus));
         }
-        c.memory_.clear();
         c.energy_ -= cost;
     };
 }
