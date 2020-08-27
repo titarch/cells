@@ -53,7 +53,9 @@ viruses::const_iterator Virus::infect(cell_ptr cell) {
 
 
 void Virus::draw(sf::RenderWindow& w) {
-    static sf::CircleShape circle(radius_);
+    static sf::CircleShape circle{};
+    circle.setPointCount(codons_.size());
+    circle.setRadius(radius_);
     circle.setPosition(pos_.x() - radius_, pos_.y() - radius_);
     circle.setOutlineThickness(radius_ / 5.f);
     circle.setOutlineColor(sf::Color::Blue);
