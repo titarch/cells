@@ -23,8 +23,7 @@ making the simulation go too much crazy.
 - sfml
 
 ## Instructions
-bash
-```
+```sh
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
