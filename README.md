@@ -2,7 +2,7 @@
 
 Fun little cellular automata simulation with cells, viruses and food particles.
 This project is highly inspired from [carykh](https://www.youtube.com/watch?v=o1IheoDRdGE)'s virus simulator,
-except that cells are round, move, can divide (and some others). Also this is optimized to allow simulations
+except that cells are round, move, can divide (and some other things). Also this is optimized to allow simulations
 to run very fast (with a reasonable number of objects).
 
 Quick explanation:
