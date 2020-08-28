@@ -7,7 +7,7 @@
 
 cell_ptr Virus::collides() const {
     for (auto& cell : e_.get_cells())
-        if ((pos_ - cell->pos()).sqrMagnitude() < 3 * cell->radius() * radius_)
+        if ((pos_ - cell->pos()).sqrMagnitude() < std::pow(0.75f * cell->radius() + radius_, 2))
             return cell;
     return cell_ptr();
 }

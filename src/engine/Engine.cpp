@@ -39,7 +39,7 @@ void Engine::draw_scene(sf::RenderWindow& w) {
 void Engine::update_physics() {
     for (auto const& ci : cells_) {
         for (auto const& cj : cells_) {
-            if (ci == cj || (ci->pos() - cj->pos()).sqrMagnitude() >= 9 * ci->radius() * cj->radius())
+            if (ci == cj || (ci->pos() - cj->pos()).sqrMagnitude() >= 2.25f * std::pow(ci->radius() + cj->radius(), 2))
                 continue;
             auto n = (ci->pos() - cj->pos()).normalized();
             if (std::isnan(n.sqrMagnitude()))
