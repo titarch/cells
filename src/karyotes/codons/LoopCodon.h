@@ -51,6 +51,8 @@ public:
     static action_func active_loc(int cost);
     static action_func read(int cost, int start, int end);
     static action_func write(int cost);
+    static action_func clear_mem();
+    static action_func mem_codon(int cost, const action_func& action);
     static action_func divide(Engine& e, int threshold);
 protected:
     int max_durability_, durability_;

@@ -113,6 +113,19 @@ action_func LoopCodon::write(int cost) {
     };
 }
 
+action_func LoopCodon::clear_mem() {
+    return [](LoopCell& c) {
+        c.memory_.clear();
+    };
+}
+
+action_func LoopCodon::mem_codon(int cost, action_func const& action) {
+    return [cost, action](LoopCell& c) {
+        c.memory_.push_back(std::make_shared<LoopCodon>(100, action));
+        c.energy_ -= cost;
+    };
+}
+
 static sf::Color hsv(int hue, float sat, float val) {
     hue %= 360;
     while (hue < 0) hue += 360;

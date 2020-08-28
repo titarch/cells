@@ -91,13 +91,50 @@ public:
     static Virus replicator(Engine& e, Vec2f const& pos, Vec2f const& vel) {
         Virus v(e, pos, vel);
         v.push_codons({
-            LoopCodon::hand_inwards(2),
-            LoopCodon::active_loc(1),
-            LoopCodon::read(2, -1, 4),
-            LoopCodon::hand_outwards(2),
-            LoopCodon::eat(),
-            LoopCodon::write(2)
-        });
+                              LoopCodon::hand_inwards(2),
+                              LoopCodon::active_loc(1),
+                              LoopCodon::read(2, -1, 4),
+                              LoopCodon::hand_outwards(2),
+                              LoopCodon::eat(),
+                              LoopCodon::write(2)
+                      });
+        return v;
+    }
+
+    static Virus cancer_inducer(Engine& e, Vec2f const& pos, Vec2f const& vel) {
+        Virus v(e, pos, vel);
+        v.push_codons({
+                              LoopCodon::hand_inwards(2),
+                              LoopCodon::active_loc(1),
+                              LoopCodon::read(2, -1, 8),
+                              LoopCodon::hand_outwards(2),
+                              LoopCodon::eat(),
+                              LoopCodon::write(2),
+                              LoopCodon::eat(),
+                              LoopCodon::write(2),
+                              LoopCodon::eat(),
+                              LoopCodon::divide(e, 10)
+                      });
+        return v;
+    }
+
+
+    static Virus efficient_cancer_inducer(Engine& e, Vec2f const& pos, Vec2f const& vel) {
+        Virus v(e, pos, vel);
+        v.push_codons({
+                              LoopCodon::hand_inwards(2),
+                              LoopCodon::active_loc(1),
+                              LoopCodon::read(2, -1, 10),
+                              LoopCodon::hand_outwards(2),
+                              LoopCodon::eat(),
+                              LoopCodon::write(2),
+                              LoopCodon::eat(),
+                              LoopCodon::write(2),
+                              LoopCodon::clear_mem(),
+                              LoopCodon::mem_codon(1, LoopCodon::eat()),
+                              LoopCodon::mem_codon(1, LoopCodon::divide(e, 10)),
+                              LoopCodon::write(1),
+                      });
         return v;
     }
 
