@@ -18,12 +18,12 @@ void Engine::update_cells() {
     static const auto idle_time = 1.f / (float) ups_;
     static auto elapsed_time = 0.f;
     elapsed_time += dt();
-    if (elapsed_time < idle_time)
-        return;
-    elapsed_time = 0.f;
 
-    for (auto it = cells_.cbegin(); it != cells_.cend();)
-        it = it->get()->update(it);
+    while (elapsed_time >= idle_time) {
+        elapsed_time -= idle_time;
+        for (auto it = cells_.cbegin(); it != cells_.cend();)
+            it = it->get()->update(it);
+    }
 }
 
 
