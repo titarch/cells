@@ -5,6 +5,7 @@
 #include <thread>
 #include <cmath>
 #include "Engine.h"
+#include "GUI.hh"
 
 void Engine::update_time() {
     dt_ = clock_.restart();
@@ -57,24 +58,17 @@ void Engine::update_physics() {
 
 void Engine::run() {
     sf::RenderWindow window(sf::VideoMode(w_, h_), "sfml-cells");
+    GUI gui{*this, window};
+    gui.add_event(sf::Event::Closed, [&window]() { window.close(); })
+            .add_key_event(sf::Event::KeyPressed, sf::Keyboard::Escape, [&window]() { window.close(); });
+
     while (window.isOpen()) {
         sf::Event e{};
-
-        while (window.pollEvent(e)) {
-            if (e.type == sf::Event::Closed)
-                window.close();
-            else if (e.type == sf::Event::KeyPressed) {
-                switch (e.key.code) {
-                    case sf::Keyboard::Escape:
-                        window.close();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        while (window.pollEvent(e))
+            gui.handle_events(e);
         window.clear();
         draw_scene(window);
+        gui.draw();
         window.display();
         update_cells();
         update_physics();
