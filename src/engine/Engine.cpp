@@ -59,8 +59,9 @@ void Engine::update_physics() {
 void Engine::run() {
     sf::RenderWindow window(sf::VideoMode(w_, h_), "sfml-cells");
     GUI gui{*this, window};
-    gui.add_event(sf::Event::Closed, [&window]() { window.close(); })
-            .add_key_event(sf::Event::KeyPressed, sf::Keyboard::Escape, [&window]() { window.close(); });
+    gui.add_event(sf::Event::Closed, [&window](sf::Event&) { window.close(); })
+            .add_key_event(sf::Event::KeyPressed, sf::Keyboard::Escape, [&window](sf::Event&) { window.close(); });
+    gui.add_mb_event(sf::Event::MouseButtonPressed, sf::Mouse::Left, [&](sf::Event& e) { std::cout << e.mouseButton.x << std::endl; });
 
     while (window.isOpen()) {
         sf::Event e{};
