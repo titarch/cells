@@ -10,7 +10,7 @@
 cell_ptr Engine::cell_at(Vec2f const& pos) const {
     std::map<cell_ptr, float> ds;
     for (auto const& cell : cells_)
-        if (auto dist = (cell->pos() - pos).sqrMagnitude(); dist < std::pow(cell->radius(), 2))
+        if (auto dist = (cell->pos() - pos).sqrMagnitude(); dist < std::pow(1.5f * cell->radius(), 2))
             ds.insert({cell, dist});
 
     if (ds.empty())
