@@ -54,6 +54,7 @@ public:
 
     void brake(float frot = 0.5) { vel_ *= frot; }
 
+    virtual std::string info() const = 0;
     virtual cells::const_iterator update(cells::const_iterator cur) = 0;
     virtual void draw(sf::RenderWindow& w) const = 0;
 

@@ -76,6 +76,7 @@ public:
 
     particles& get_particles() { return particles_; }
 
+    cell_ptr cell_at(Vec2f const& pos) const;
     void update_time();
     float dt() const;
     void draw_scene(sf::RenderWindow& w);

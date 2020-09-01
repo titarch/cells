@@ -50,6 +50,10 @@ public:
         return copy;
     }
 
+    friend std::ostream& operator<<(std::ostream& os, LoopCell const& lp);
+
+    std::string info() const override;
+
     const loop_codon_ptr codon(size_t idx) const {
         return std::static_pointer_cast<LoopCodon>(codons_[idx]);
     }

@@ -7,6 +7,18 @@
 #include "LoopCell.h"
 #include "particles/Food.h"
 
+std::ostream& operator<<(std::ostream& os, LoopCell const& lp) {
+    return os
+            << "Position: " << lp.pos_
+            << "\nCodon number: " << lp.codons_.size()
+            << std::endl;
+}
+
+std::string LoopCell::info() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
+}
 
 cells::const_iterator LoopCell::update(cells::const_iterator cur) {
     if (energy_ <= 0) return die();

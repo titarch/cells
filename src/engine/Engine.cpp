@@ -7,6 +7,18 @@
 #include "Engine.h"
 #include "GUI.hh"
 
+cell_ptr Engine::cell_at(Vec2f const& pos) const {
+    std::map<cell_ptr, float> ds;
+    for (auto const& cell : cells_)
+        if (auto dist = (cell->pos() - pos).sqrMagnitude(); dist < std::pow(cell->radius(), 2))
+            ds.insert({cell, dist});
+
+    if (ds.empty())
+        return cell_ptr{};
+    return std::min_element(ds.cbegin(), ds.cend(),
+                            [](auto const& lhs, auto const& rhs) { return lhs.second < rhs.second; })->first;
+}
+
 void Engine::update_time() {
     dt_ = clock_.restart();
 }
@@ -61,7 +73,13 @@ void Engine::run() {
     GUI gui{*this, window};
     gui.add_event(sf::Event::Closed, [&window](sf::Event&) { window.close(); })
             .add_key_event(sf::Event::KeyPressed, sf::Keyboard::Escape, [&window](sf::Event&) { window.close(); });
-    gui.add_mb_event(sf::Event::MouseButtonPressed, sf::Mouse::Left, [&](sf::Event& e) { std::cout << e.mouseButton.x << std::endl; });
+    gui.add_mb_event(sf::Event::MouseButtonPressed, sf::Mouse::Left,
+                     [&](sf::Event& e) {
+                         if (auto cell = cell_at({{(float) e.mouseButton.x, (float) e.mouseButton.y}}); cell)
+                             std::cout << cell->info() << std::endl;
+                         else
+                             std::cout << "No cell at current location" << std::endl;
+                     });
 
     while (window.isOpen()) {
         sf::Event e{};
