@@ -6,7 +6,6 @@
 #include <ostream>
 #include <array>
 #include <execution>
-#include "yaml-cpp/yaml.h"
 
 template<typename T, size_t D>
 class Vector {
@@ -131,13 +130,6 @@ public:
         for (const T& e: v)
             os << e << ' ';
         return os << ")";
-    }
-
-    friend YAML::Emitter& operator<<(YAML::Emitter& out, Vector const& v) {
-        out << YAML::Flow << YAML::BeginSeq;
-        for (const T& e: v)
-            out << e;
-        return out << YAML::EndSeq;
     }
 
 private:
