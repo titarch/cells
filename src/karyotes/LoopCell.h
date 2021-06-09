@@ -79,7 +79,7 @@ public:
 
     LoopCell& inject_codons(codons&& foreign_codons) {
         energy_ += foreign_codons.size();
-        food_accumulated_ += foreign_codons.size();
+        food_accumulated_ += foreign_codons.size() - 1;
         if (infected_) return *this;
         codons_.reserve(codons_.size() + foreign_codons.size());
         codons_.insert(
