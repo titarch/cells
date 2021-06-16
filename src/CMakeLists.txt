@@ -7,4 +7,4 @@ set(EXECUTABLE_OUTPUT_PATH ..)
 
 #target_link_libraries(${EXECUTABLE_NAME} PUBLIC tbb yaml-cpp)
 target_link_libraries(${EXECUTABLE_NAME} utils karyotes engine)
-target_link_libraries(${EXECUTABLE_NAME} tbb sfml-window sfml-graphics)
+target_link_libraries(${EXECUTABLE_NAME} sfml-window sfml-graphics)
