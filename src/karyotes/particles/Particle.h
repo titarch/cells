@@ -14,8 +14,11 @@
 
 class Particle {
 public:
-    explicit Particle(Vec2f const& dim, float speed) : dim_(dim), pos_(dim % Vec2f::random()),
-                                                       speed_(Vec2f::signed_random().normalized() * speed) {}
+    explicit Particle(Vec2f const& dim, Vec2f const& pos, float speed) : dim_(dim), pos_(pos),
+                                                                         speed_(Vec2f::signed_random().normalized() *
+                                                                                speed) {}
+
+    explicit Particle(Vec2f const& dim, float speed) : Particle(dim, dim % Vec2f::random(), speed) {}
 
     virtual ~Particle() = default;
 
